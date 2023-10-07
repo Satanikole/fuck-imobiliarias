@@ -1,12 +1,18 @@
 const puppeteer = require('puppeteer');
-const {url} = require('./url');
+const urlIterator = require('./url');
 
-const puppeteer = async () => {
+const puppeteerHandler = async () => {
+  const urls =  urlIterator();
   const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto(url);
+
+  for (const url of urls) {
+    const page = await browser.newPage();
+    await page.goto(url);
+    console.log(url);
+    await page.close();
+  }
   
   await browser.close();
 };
 
-module.exports = puppeteer;
+module.exports = puppeteerHandler;
